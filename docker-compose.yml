@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # PostgreSQL база данных
+  postgres:
+    image: postgres:15-alpine
+    container_name: etf-monitor-db
+    environment:
+      POSTGRES_DB: etf_monitor
+      POSTGRES_USER: etf_user
+      POSTGRES_PASSWORD: etf_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U etf_user -d etf_monitor"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ETF Monitor приложение
+  etf-monitor:
+    build: .
+    container_name: etf-monitor-app
+    environment:
+      - DATABASE_URL=postgres://etf_user:etf_password@postgres:5432/etf_monitor
+      - TINKOFF_TOKEN=${TINKOFF_TOKEN}
+      - ETF_FETCH_INTERVAL=${ETF_FETCH_INTERVAL:-5}
+      - INVESTORS_FETCH_INTERVAL=${INVESTORS_FETCH_INTERVAL:-30}
+      - PUPPETEER_HEADLESS=true
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+    # Раскомментируйте для отладки
+    # ports:
+    #   - "3000:3000"
+
+  # Adminer для управления базой данных (опционально)
+  adminer:
+    image: adminer:latest
+    container_name: etf-monitor-adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+
+volumes:
+  postgres_data:
+    driver: local

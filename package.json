@@ -1,0 +1,43 @@
+{
+  "name": "etf-monitor",
+  "version": "1.0.0",
+  "description": "Система мониторинга ETF фондов Т-Капитал",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "setup-db": "node src/database/setup.js",
+    "fetch-etfs": "node src/scripts/fetch-api.js",
+    "fetch-investors": "node src/scripts/fetch-investors.js",
+    "stats-etfs": "node src/scripts/fetch-api.js stats",
+    "stats-investors": "node src/scripts/fetch-investors.js stats",
+    "report-full": "node src/scripts/analytics-report.js full",
+    "report-etf": "node src/scripts/analytics-report.js etf",
+    "health-check": "node src/utils/health-check.js",
+    "health-quick": "node src/utils/health-check.js quick",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tinkoff",
+    "etf",
+    "monitoring",
+    "invest-api",
+    "t-capital"
+  ],
+  "author": "ETF Monitor",
+  "license": "MIT",
+  "dependencies": {
+    "tinkoff-invest-api": "^2.0.0",
+    "puppeteer": "^21.0.0",
+    "pg": "^8.11.0",
+    "dotenv": "^16.3.0",
+    "node-cron": "^3.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
