@@ -16,6 +16,12 @@
     "report-etf": "node src/scripts/analytics-report.js etf",
     "health-check": "node src/utils/health-check.js",
     "health-quick": "node src/utils/health-check.js quick",
+    "balancer": "node src/scripts/run-balancer.js",
+    "balancer-status": "node src/scripts/run-balancer.js status",
+    "balancer-once": "node src/scripts/run-balancer.js once",
+    "balancer-auto": "node src/scripts/run-balancer.js auto",
+    "balancer-test": "node src/scripts/run-balancer.js test",
+    "balancer-demo": "node src/scripts/demo-balancer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -28,11 +34,12 @@
   "author": "ETF Monitor",
   "license": "MIT",
   "dependencies": {
-    "tinkoff-invest-api": "^2.0.0",
-    "puppeteer": "^21.0.0",
+    "dotenv": "^16.6.1",
+    "node-cron": "^3.0.3",
     "pg": "^8.11.0",
-    "dotenv": "^16.3.0",
-    "node-cron": "^3.0.0"
+    "puppeteer": "^21.0.0",
+    "tinkoff-invest-api": "^2.4.7",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
